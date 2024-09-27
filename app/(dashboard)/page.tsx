@@ -52,3 +52,4 @@ export default async function ProductsPage({
     </Tabs>
   );
 }
+
