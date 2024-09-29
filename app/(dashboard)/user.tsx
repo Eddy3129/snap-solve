@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { auth, signOut } from '@/lib/auth';
+import { signOut } from '@/lib/auth';
 import Image from 'next/image';
 import {
   DropdownMenu,
@@ -11,10 +11,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 
-export async function User() {
-  let session = await auth();
-  let user = session?.user;
+interface UserProps {
+  user: any; // Define a proper type for user if possible
+}
 
+export default function User({ user }: UserProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -42,7 +43,6 @@ export async function User() {
           <DropdownMenuItem>
             <form
               action={async () => {
-                'use server';
                 await signOut();
               }}
             >

@@ -96,3 +96,16 @@ input[type='search']::-ms-clear {
   width: 100%;
   height: 100%; /* Ensure height is also set for proper rendering */
 }
+
+button.wallet-adapter-button-trigger {
+  background: purple;
+  border-radius: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+button.wallet-adapter-button-trigger:hover {
+  background-color: plum !important;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
