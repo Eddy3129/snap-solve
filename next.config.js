@@ -1,6 +1,5 @@
-
 const nextConfig = {
-  reactStrictMode: false, 
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {
@@ -10,6 +9,15 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '*.public.blob.vercel-storage.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'mybuxkutxuhcwdclejpm.supabase.co'
+      },
+      // If you also need https for example.com, add this:
+      {
+        protocol: 'http',
+        hostname: 'example.com'
       }
     ]
   }

@@ -5,6 +5,8 @@ import { Button } from '../button';
 import styled from 'styled-components';
 import { createClient } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { SessionProvider } from "next-auth/react";
+
 
 // Styled Components
 const ImageUploadArea = styled.div`
@@ -136,19 +138,25 @@ export default function ReportForm() {
     const description = (document.getElementById('description') as HTMLInputElement).value;
     const location = (document.getElementById('location') as HTMLInputElement).value;
 
-    if (!title || !description || !latitude || !longitude || !imageURL) {
+    if (!title || !description || !location || !latitude || !longitude || !imageURL) {
       alert('Please fill in all required fields.');
       return;
     }
 
     try {
       const { error } = await supabase
-        .from('petitions') // Replace 'petitions' with your actual table name
-        .insert([
-          { title, description, latitude, longitude, image: imageURL }
-        ]);
-      
-      if (error) throw error;
+      .from('petitions') 
+      .insert([
+        {
+          title,
+          description,
+          location,
+          latitude,
+          longitude,
+          image: imageURL,
+        }
+      ]);
+    if (error) throw error;
       
       setFormMessage('Petition created successfully!');
     } catch (error: any) {
