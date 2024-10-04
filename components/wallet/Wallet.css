@@ -1,0 +1,10 @@
+/* Wallet adapter button styles */
+.wallet-button {
+    @apply bg-neonPurple text-darkBg px-6 py-2 rounded-md shadow-neon;
+    transition: all 0.3s ease;
+  }
+  
+  .wallet-button:hover {
+    background-color: #bf00ff !important;
+    box-shadow: 0 0 15px rgba(189, 0, 255, 0.9);
+  }

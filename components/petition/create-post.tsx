@@ -1,7 +1,9 @@
+//components\ui\petition\create-post.tsx
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button } from '../button';
+import { Button } from '../ui/button';
 import styled from 'styled-components';
 import { createClient } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';

@@ -1,13 +1,19 @@
 import './globals.css';
-
 import { Analytics } from '@vercel/analytics/react';
-import { Wallet } from '@/components/Wallet';
+import { Wallet } from '@/components/wallet/Wallet';
+import { Orbitron } from 'next/font/google';
 
 export const metadata = {
-  title: 'Next.js App Router + NextAuth + Tailwind CSS',
-  description:
-    'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, and Prettier.'
+  title: 'SnapSolve',
+  description: 'A blockchain powered urban petition app.'
 };
+
+// Load the Orbitron font using next/font
+const orbitron = Orbitron({
+  weight: ['700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export default function RootLayout({
   children
@@ -16,9 +22,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen w-full flex-col">
-        <Wallet>{children}</Wallet></body>
-      <Analytics />
+      {/* Apply orbitron.className to body */}
+      <body className={`flex min-h-screen w-full flex-col ${orbitron.className}`}>
+        <Wallet>{children}</Wallet>
+        <Analytics />
+      </body>
     </html>
   );
 }

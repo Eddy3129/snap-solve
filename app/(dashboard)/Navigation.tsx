@@ -1,4 +1,4 @@
-// Navigation.tsx
+//app\(dashboard)\Navigation.tsx
 'use client';
 
 import Link from 'next/link';
@@ -19,7 +19,6 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
-import { VercelLogo } from '@/components/icons';
 import { NavItem } from './nav-item';
 
 export function DesktopNav() {
@@ -30,7 +29,6 @@ export function DesktopNav() {
           href="/"
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
-          <VercelLogo className="h-3 w-3 transition-all group-hover:scale-110" />
           <span className="sr-only">Home</span>
         </Link>
 

@@ -19,46 +19,67 @@ export default {
     },
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        // Cyberpunk color palette
+        neonPink: '#ff007f',
+        neonBlue: '#00ffff',
+        neonGreen: '#39ff14',
+        neonPurple: '#9d00ff',
+        darkBg: '#0d0d0d',
+        darkFg: '#e6e6e6',
+
+        // Override default colors with cyberpunk theme
+        border: '#222222',
+        input: '#333333',
+        ring: '#ff007f',
+        background: '#0d0d0d',
+        foreground: '#e6e6e6',
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
+          DEFAULT: '#ff007f',
+          foreground: '#0d0d0d'
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))'
+          DEFAULT: '#00ffff',
+          foreground: '#0d0d0d'
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))'
+          DEFAULT: '#ff3131',
+          foreground: '#0d0d0d'
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))'
+          DEFAULT: '#333333',
+          foreground: '#e6e6e6'
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))'
+          DEFAULT: '#9d00ff',
+          foreground: '#0d0d0d'
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))'
+          DEFAULT: '#1a1a1a',
+          foreground: '#e6e6e6'
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))'
+          DEFAULT: '#1a1a1a',
+          foreground: '#e6e6e6'
         }
       },
+      fontFamily: {
+        // Add a cyberpunk font
+        cyberpunk: ['"Orbitron"', 'sans-serif']
+      },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        lg: '12px',
+        md: '10px',
+        sm: '8px'
+      },
+      boxShadow: {
+        // Neon glow effect
+        neon: '0 0 10px rgba(255, 0, 127, 0.7)'
       },
       keyframes: {
+        'neon-blink': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' }
+        },
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' }
@@ -69,6 +90,7 @@ export default {
         }
       },
       animation: {
+        'neon-blink': 'neon-blink 1.5s infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out'
       }

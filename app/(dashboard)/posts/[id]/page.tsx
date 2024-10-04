@@ -1,10 +1,10 @@
-// app/posts/[id]/page.tsx
-
-import { supabase } from "@/lib/supabase";
-import Image from "next/image";
-import { notFound } from "next/navigation";
-import { Petition } from "@/components/ui/petition/interface";
-import SignPetitionButton from "@/components/ui/petition/SignPetitionButton";
+import { supabase } from '@/lib/supabase';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { Petition } from '@/components/petition/interface';
+import SignPetitionButton from '@/components/petition/SignPetitionButton';
+import { Progress } from '@/components/ui/progress';
+import { Calendar, MapPin } from 'lucide-react';
 
 interface Props {
   params: {
@@ -14,9 +14,9 @@ interface Props {
 
 async function getPetition(id: string): Promise<Petition> {
   const { data, error } = await supabase
-    .from("petitions")
-    .select("*")
-    .eq("id", id)
+    .from('petitions')
+    .select('*')
+    .eq('id', id)
     .single();
 
   if (error) {
@@ -30,32 +30,41 @@ export default async function PetitionDetail({ params }: Props) {
   try {
     const petition = await getPetition(params.id);
 
+    const progress = (petition.signatures / petition.goal) * 100;
+
     return (
-      <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
-        <div className="relative h-48 w-full">
-          <Image 
-            src={petition.image} 
-            alt={petition.title}
-            fill
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-        <div className="p-4">
-          <h1 className="text-xl font-bold mb-2">{petition.title}</h1>
-          <p className="text-gray-700 text-sm mb-4">{petition.description}</p>
-          <div className="mb-4">
-            <div className="flex justify-between text-sm text-gray-500 mb-1">
-              <span>{petition.signatures} have signed</span>
-              <span>Goal: {petition.goal}</span>
-            </div>
-            <div className="h-2 bg-gray-200 rounded-full">
-              <div 
-                className="h-full bg-blue-500 rounded-full" 
-                style={{ width: `${(petition.signatures / petition.goal) * 100}%` }}
-              ></div>
-            </div>
+      <div className="max-w-3xl mx-auto p-6">
+        <div className="bg-card text-card-foreground rounded-lg overflow-hidden shadow-neon">
+          <div className="relative h-64 w-full">
+            <Image
+              src={petition.image}
+              alt={petition.title}
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
-          <SignPetitionButton petitionId={params.id} />
+          <div className="p-6">
+            <h1 className="text-3xl font-bold mb-4 text-neonPink">
+              {petition.title}
+            </h1>
+            <div className="flex items-center text-sm text-muted-foreground mb-4">
+              <MapPin className="mr-2 h-4 w-4" />
+              <span>{petition.location}</span>
+              <Calendar className="mx-4 h-4 w-4" />
+              <span>
+                Created: {new Date(petition.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+            <p className="text-lg mb-6">{petition.description}</p>
+            <div className="mb-6">
+              <div className="flex justify-between text-sm mb-2">
+                <span>{petition.signatures} have signed</span>
+                <span>Goal: {petition.goal}</span>
+              </div>
+              <Progress value={progress} />
+            </div>
+            <SignPetitionButton petitionId={params.id} />
+          </div>
         </div>
       </div>
     );

@@ -1,6 +1,8 @@
+//components\styles\Popup.tsx
+
 import { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
-import ReportForm from '../ui/petition/create-post';
+import ReportForm from '../petition/create-post';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: scale(0.9); }
@@ -11,7 +13,7 @@ const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 2000;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.7);

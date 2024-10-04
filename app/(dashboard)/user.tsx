@@ -1,3 +1,5 @@
+//app\(dashboard)\user.tsx
+
 import { Button } from '@/components/ui/button';
 import { signOut } from '@/lib/auth';
 import Image from 'next/image';

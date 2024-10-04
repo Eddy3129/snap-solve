@@ -2,110 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-  }
-}
+/* Import the Orbitron font */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-darkBg text-foreground font-cyberpunk !important;
   }
-}
 
-/* Chrome, Safari, Edge, Opera */
-input[type='search']::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-}
+  /* Cyberpunk scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    background: #1a1a1a;
+  }
 
-/* Firefox */
-input[type='search']::-moz-search-cancel-button {
-  display: none;
-}
+  ::-webkit-scrollbar-thumb {
+    background: #ff007f;
+    border-radius: 4px;
+  }
 
-/* Microsoft Edge */
-input[type='search']::-ms-clear {
-  display: none;
-}
+  .orbitron {
+    font-family: 'Orbitron', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  
 
-/* Add this to your global CSS file */
-#map {
-  width: 100%;
-  height: 100%; /* Ensure height is also set for proper rendering */
-}
+  /* Neon button styles */
+  .neon-button {
+    @apply bg-neonPink text-darkBg px-4 py-2 rounded-md shadow-neon;
+    transition: all 0.3s ease;
+  }
 
-button.wallet-adapter-button-trigger {
-  background: purple;
-  border-radius: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
+  .neon-button:hover {
+    @apply bg-neonPink/80;
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.9);
+  }
 
-button.wallet-adapter-button-trigger:hover {
-  background-color: plum !important;
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+  /* Map styling */
+  #map {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ff007f;
+    border-radius: 8px;
+  }
+
+
+  /* Input fields */
+  input,
+  textarea {
+    @apply bg-input border border-neonPink text-foreground rounded-md px-3 py-2;
+    transition: border-color 0.3s ease;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #00ffff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+  }
 }

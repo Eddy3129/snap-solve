@@ -1,3 +1,5 @@
+//app\(dashboard)\UserWrapper.tsx
+
 import { auth } from '@/lib/auth';
 import User from './user';
 

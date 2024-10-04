@@ -1,3 +1,5 @@
+//app\(dashboard)\search.tsx
+
 'use client';
 
 import { useTransition } from 'react';
