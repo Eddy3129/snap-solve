@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { createClient } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { SessionProvider } from "next-auth/react";
+import LocationSearchInput from '@/components/LocationSearchInput';
 
 
 // Styled Components
@@ -101,14 +102,13 @@ export default function ReportForm() {
   };
 
   // Handle suggestion click
-  const handleSuggestionClick = (suggestion: LocationSuggestion) => {
+  const handleLocationSelect = (suggestion: LocationSuggestion) => {
     const locationInput = document.getElementById('location') as HTMLInputElement;
     if (locationInput) {
       locationInput.value = suggestion.display_name;
-      setLatitude(suggestion.lat);
-      setLongitude(suggestion.lon);
     }
-    setIsDropdownVisible(false);
+    setLatitude(suggestion.lat);
+    setLongitude(suggestion.lon);
   };
 
   // Handle image upload
@@ -206,24 +206,7 @@ export default function ReportForm() {
             Location
           </label>
           <div className="flex items-center relative">
-            <input
-              id="location"
-              name="location"
-              type="text"
-              placeholder="Where is this?"
-              onChange={handleLocationChange}
-              className="flex-grow px-3 py-2 bg-gray-800 border border-purple-500 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
-              required
-            />
-            {isDropdownVisible && locationSuggestions.length > 0 && (
-              <DropdownList>
-                {locationSuggestions.map((suggestion, index) => (
-                  <DropdownItem key={index} onClick={() => handleSuggestionClick(suggestion)}>
-                    {suggestion.display_name}
-                  </DropdownItem>
-                ))}
-              </DropdownList>
-            )}
+            <LocationSearchInput onLocationSelect={handleLocationSelect} />
           </div>
         </div>
 

@@ -7,60 +7,76 @@
 
 @layer base {
   body {
-    @apply bg-darkBg text-foreground font-cyberpunk !important;
+    @apply bg-black text-white font-orbitron;
   }
 
-  /* Cyberpunk scrollbars */
-  ::-webkit-scrollbar {
-    width: 8px;
-    background: #1a1a1a;
+  /* Import Orbitron font into Tailwind */
+  @layer utilities {
+    .font-orbitron {
+      font-family: 'Orbitron', sans-serif;
+    }
   }
-
-  ::-webkit-scrollbar-thumb {
-    background: #ff007f;
-    border-radius: 4px;
-  }
-
-  .orbitron {
-    font-family: 'Orbitron', sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  
 
   /* Neon button styles */
   .neon-button {
-    @apply bg-neonPink text-darkBg px-4 py-2 rounded-md shadow-neon;
-    transition: all 0.3s ease;
+    @apply bg-neonPink text-black px-4 py-2 rounded-md shadow-neon;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .neon-button:hover {
     @apply bg-neonPink/80;
-    box-shadow: 0 0 15px rgba(255, 0, 127, 0.9);
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.7);
+  }
+
+  /* Navbar Styles */
+  .navbar {
+    @apply bg-black;
+  }
+
+  /* Style for nav links */
+  .nav-link {
+    @apply text-white px-3 py-2 rounded-md transition-colors duration-300;
+  }
+
+  .nav-link:hover {
+    @apply bg-neonPink/20;
+  }
+
+  .active-link {
+    @apply bg-neonPurple text-white;
+    border-radius: 8px;
+    padding: 4px 8px;
   }
 
   /* Map styling */
   #map {
-    width: 100%;
-    height: 100%;
-    border: 2px solid #ff007f;
-    border-radius: 8px;
+    @apply w-full h-full border-2 border-neonPink rounded-lg;
   }
-
 
   /* Input fields */
   input,
   textarea {
-    @apply bg-input border border-neonPink text-foreground rounded-md px-3 py-2;
+    @apply bg-gray-800 border border-neonPink text-white rounded-md px-3 py-2;
     transition: border-color 0.3s ease;
   }
 
   input:focus,
   textarea:focus {
-    border-color: #00ffff;
-    outline: none;
+    @apply border-teal-400 outline-none shadow-outline-teal;
+  }
+}
+
+/* Custom Colors */
+@layer utilities {
+  .bg-neonPink {
+    background-color: #ff007f;
+  }
+
+  .shadow-neon {
+    box-shadow: 0 0 10px #ff007f;
+  }
+
+  .shadow-outline-teal {
     box-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
   }
 }

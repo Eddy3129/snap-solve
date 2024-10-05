@@ -3,9 +3,8 @@
 'use client'; // Correct placement at the top
 
 import { Analytics } from '@vercel/analytics/react';
-import Providers from './providers';
 import { Wallet } from '@/components/wallet/Wallet';
-import Navbar from '@/components/navbar';
+import Navbar from './navbar';
 
 export default function DashboardLayout({
   children,
@@ -13,7 +12,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Providers>
       <Wallet>
         <main className="flex min-h-screen w-full flex-col bg-darkBg font-cyberpunk">
           <Navbar onSearch={handleSearch} onLocateUser={handleLocateUser} />
@@ -21,7 +19,6 @@ export default function DashboardLayout({
           <Analytics />
         </main>
       </Wallet>
-    </Providers>
   );
 }
 

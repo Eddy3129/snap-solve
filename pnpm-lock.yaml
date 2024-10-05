@@ -11,6 +11,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@19.0.0-rc-3edc000d-20240926))
+      '@maptiler/geocoding-control':
+        specifier: ^1.4.1
+        version: 1.4.1(leaflet@1.9.4)(react@19.0.0-rc-3edc000d-20240926)
       '@neondatabase/serverless':
         specifier: ^0.9.5
         version: 0.9.5
@@ -131,6 +134,9 @@ importers:
       react-dom:
         specifier: 19.0.0-rc-3edc000d-20240926
         version: 19.0.0-rc-3edc000d-20240926(react@19.0.0-rc-3edc000d-20240926)
+      react-feather:
+        specifier: ^2.0.10
+        version: 2.0.10(react@19.0.0-rc-3edc000d-20240926)
       react-hook-form:
         specifier: ^7.53.0
         version: 7.53.0(react@19.0.0-rc-3edc000d-20240926)
@@ -1464,6 +1470,29 @@ packages:
   '@ledgerhq/logs@6.12.0':
     resolution: {integrity: sha512-ExDoj1QV5eC6TEbMdLUMMk9cfvNKhhv5gXol4SmULRVCx/3iyCPhJ74nsb3S0Vb+/f+XujBEj3vQn5+cwS0fNA==}
 
+  '@maptiler/geocoding-control@1.4.1':
+    resolution: {integrity: sha512-/NMM8oaKKAdF36KbJuucJc18RaY+VpwkJ2V098yoG7H+9K7Rkyen+XKuLDA8gmvrgTeX1m48Pb9RP+e5zCrRvA==}
+    peerDependencies:
+      '@maptiler/sdk': ^1 || ^2
+      leaflet: ^1.7 || ^1.8 || ^1.9
+      maplibre-gl: ^2 || ^3 || ^4
+      ol: ^6 || ^7 || ^8 || ^9 || ^10
+      react: ^17 || ^18
+      svelte: ^4.2
+    peerDependenciesMeta:
+      '@maptiler/sdk':
+        optional: true
+      leaflet:
+        optional: true
+      maplibre-gl:
+        optional: true
+      ol:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+
   '@metamask/rpc-errors@5.1.1':
     resolution: {integrity: sha512-JjZnDi2y2CfvbohhBl+FOQRzmFlJpybcQlIk37zEX8B96eVSPbH/T8S0p7cSF8IE33IWx6JkD8Ycsd+2TXFxCw==}
     engines: {node: '>=16.0.0'}
@@ -2730,6 +2759,27 @@ packages:
     resolution: {integrity: sha512-yBodbZ5kmZucSJFhWfO8WefAacm+d12wbKX8zgrRnQM5Hr4NfACvQh2yLh4UpgM/r3BGAbx8qnEXNpw6SwdOTg==}
     peerDependencies:
       tslib: ^2.6.2
+
+  '@turf/bbox@7.1.0':
+    resolution: {integrity: sha512-PdWPz9tW86PD78vSZj2fiRaB8JhUHy6piSa/QXb83lucxPK+HTAdzlDQMTKj5okRCU8Ox/25IR2ep9T8NdopRA==}
+
+  '@turf/clone@7.1.0':
+    resolution: {integrity: sha512-5R9qeWvL7FDdBIbEemd0eCzOStr09oburDvJ1hRiPCFX6rPgzcZBQ0gDmZzoF4AFcNLb5IwknbLZjVLaUGWtFA==}
+
+  '@turf/difference@7.1.0':
+    resolution: {integrity: sha512-+JVzdskICQ8ULKQ9CpWUM5kBvoXxN4CO78Ez/Ki3/7NXl7+HM/nb12B0OyM8hkJchpb8TsOi0YwyJiKMqEpTBA==}
+
+  '@turf/flatten@7.1.0':
+    resolution: {integrity: sha512-Kb23pqEarcLsdBqnQcK0qTrSMiWNTVb9tOFrNlZc66DIhDLAdpOKG4eqk00CMoUzWTixlnawDgJRqcStRrR4WA==}
+
+  '@turf/helpers@7.1.0':
+    resolution: {integrity: sha512-dTeILEUVeNbaEeoZUOhxH5auv7WWlOShbx7QSd4s0T4Z0/iz90z9yaVCtZOLbU89umKotwKaJQltBNO9CzVgaQ==}
+
+  '@turf/meta@7.1.0':
+    resolution: {integrity: sha512-ZgGpWWiKz797Fe8lfRj7HKCkGR+nSJ/5aKXMyofCvLSc2PuYJs/qyyifDPWjASQQCzseJ7AlF2Pc/XQ/3XkkuA==}
+
+  '@turf/union@7.1.0':
+    resolution: {integrity: sha512-7VI8jONdBg9qmbfNlLQycPr93l5aU9HGMgWI9M6pb4ERuU2+p8KgffCgs2NyMtP2HxPrKSybzj31g7bnbEKofQ==}
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
@@ -4288,6 +4338,9 @@ packages:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
 
+  geo-coordinates-parser@1.7.3:
+    resolution: {integrity: sha512-zrMUPAVXAZRhEF2VFQEl9mR0yK9BZ+/n0G79uBHVg8XTsm7Ci0L2zGgW+p+h/Sq/8i6X3WSVfpp4t8n9kepXqg==}
+
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
@@ -5562,6 +5615,9 @@ packages:
     resolution: {integrity: sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==}
     engines: {node: '>=4.0.0'}
 
+  polygon-clipping@0.15.7:
+    resolution: {integrity: sha512-nhfdr83ECBg6xtqOAJab1tbksbBAOMUltN60bU+llHVOL0e5Onm1WpAXXWXVB39L8AJFssoIhEVuy/S90MmotA==}
+
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
@@ -5753,6 +5809,11 @@ packages:
     resolution: {integrity: sha512-0nEYp9I8IF5GZQOJdKSPhkwVFgBmYFiFJOzw5xfPD1USj/Wf8Z7lpruV7WStKD4uxbtfLamDMGZTRkSby7eAwQ==}
     peerDependencies:
       react: 19.0.0-rc-3edc000d-20240926
+
+  react-feather@2.0.10:
+    resolution: {integrity: sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==}
+    peerDependencies:
+      react: '>=16.8.6'
 
   react-hook-form@7.53.0:
     resolution: {integrity: sha512-M1n3HhqCww6S2hxLxciEXy2oISPnAzxY7gvwVPrtlczTM/1dDadXgUxDpHMrMTblDOcm/AXtXxHwZ3jpg1mqKQ==}
@@ -5973,6 +6034,9 @@ packages:
     engines: {node: '>=10.13.0', yarn: ^1.15.2}
     deprecated: 'ripple-lib is deprecated. Please migrate to xrpl.js using this migration guide: https://xrpl.org/xrpljs2-migration-guide.html'
 
+  robust-predicates@3.0.2:
+    resolution: {integrity: sha512-IXgzBWvWQwE6PrDI05OvmXUIruQTcoMDzRsOd5CDvHCVLcLHMTSYvOK5Cm46kWqlV3yAbuSpBZdJ5oP5OUoStg==}
+
   rpc-websockets@9.0.4:
     resolution: {integrity: sha512-yWZWN0M+bivtoNLnaDbtny4XchdAIF5Q4g/ZsC5UC61Ckbp0QczwO8fg44rV3uYmY4WHd+EZQbn90W1d8ojzqQ==}
 
@@ -6165,6 +6229,9 @@ packages:
   source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
+
+  splaytree@3.1.2:
+    resolution: {integrity: sha512-4OM2BJgC5UzrhVnnJA4BkHKGtjXNzzUfpQjCO8I05xYPsfS/VuQDwjCGGMi8rYQilHEV4j8NBqTFbls/PZEE7A==}
 
   split-on-first@1.1.0:
     resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==}
@@ -8275,6 +8342,18 @@ snapshots:
 
   '@ledgerhq/logs@6.12.0': {}
 
+  '@maptiler/geocoding-control@1.4.1(leaflet@1.9.4)(react@19.0.0-rc-3edc000d-20240926)':
+    dependencies:
+      '@turf/bbox': 7.1.0
+      '@turf/clone': 7.1.0
+      '@turf/difference': 7.1.0
+      '@turf/flatten': 7.1.0
+      '@turf/union': 7.1.0
+      geo-coordinates-parser: 1.7.3
+    optionalDependencies:
+      leaflet: 1.9.4
+      react: 19.0.0-rc-3edc000d-20240926
+
   '@metamask/rpc-errors@5.1.1':
     dependencies:
       '@metamask/utils': 5.0.2
@@ -10051,6 +10130,52 @@ snapshots:
       typeforce: 1.18.0
       varuint-bitcoin: 2.0.0
       wif: 5.0.0
+
+  '@turf/bbox@7.1.0':
+    dependencies:
+      '@turf/helpers': 7.1.0
+      '@turf/meta': 7.1.0
+      '@types/geojson': 7946.0.14
+      tslib: 2.7.0
+
+  '@turf/clone@7.1.0':
+    dependencies:
+      '@turf/helpers': 7.1.0
+      '@types/geojson': 7946.0.14
+      tslib: 2.7.0
+
+  '@turf/difference@7.1.0':
+    dependencies:
+      '@turf/helpers': 7.1.0
+      '@turf/meta': 7.1.0
+      '@types/geojson': 7946.0.14
+      polygon-clipping: 0.15.7
+      tslib: 2.7.0
+
+  '@turf/flatten@7.1.0':
+    dependencies:
+      '@turf/helpers': 7.1.0
+      '@turf/meta': 7.1.0
+      '@types/geojson': 7946.0.14
+      tslib: 2.7.0
+
+  '@turf/helpers@7.1.0':
+    dependencies:
+      '@types/geojson': 7946.0.14
+      tslib: 2.7.0
+
+  '@turf/meta@7.1.0':
+    dependencies:
+      '@turf/helpers': 7.1.0
+      '@types/geojson': 7946.0.14
+
+  '@turf/union@7.1.0':
+    dependencies:
+      '@turf/helpers': 7.1.0
+      '@turf/meta': 7.1.0
+      '@types/geojson': 7946.0.14
+      polygon-clipping: 0.15.7
+      tslib: 2.7.0
 
   '@types/connect@3.4.38':
     dependencies:
@@ -12023,6 +12148,8 @@ snapshots:
 
   gensync@1.0.0-beta.2: {}
 
+  geo-coordinates-parser@1.7.3: {}
+
   get-caller-file@2.0.5: {}
 
   get-intrinsic@1.2.4:
@@ -13421,6 +13548,11 @@ snapshots:
 
   pngjs@3.4.0: {}
 
+  polygon-clipping@0.15.7:
+    dependencies:
+      robust-predicates: 3.0.2
+      splaytree: 3.1.2
+
   possible-typed-array-names@1.0.0: {}
 
   postcss-import@15.1.0(postcss@8.4.47):
@@ -13635,6 +13767,11 @@ snapshots:
     dependencies:
       react: 19.0.0-rc-3edc000d-20240926
       scheduler: 0.25.0-rc-3edc000d-20240926
+
+  react-feather@2.0.10(react@19.0.0-rc-3edc000d-20240926):
+    dependencies:
+      prop-types: 15.8.1
+      react: 19.0.0-rc-3edc000d-20240926
 
   react-hook-form@7.53.0(react@19.0.0-rc-3edc000d-20240926):
     dependencies:
@@ -13937,6 +14074,8 @@ snapshots:
       - supports-color
       - utf-8-validate
 
+  robust-predicates@3.0.2: {}
+
   rpc-websockets@9.0.4:
     dependencies:
       '@swc/helpers': 0.5.11
@@ -14189,6 +14328,8 @@ snapshots:
   source-map@0.5.7: {}
 
   source-map@0.6.1: {}
+
+  splaytree@3.1.2: {}
 
   split-on-first@1.1.0: {}
 

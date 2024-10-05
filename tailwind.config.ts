@@ -76,10 +76,6 @@ export default {
         neon: '0 0 10px rgba(255, 0, 127, 0.7)'
       },
       keyframes: {
-        'neon-blink': {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.5' }
-        },
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' }
@@ -89,11 +85,6 @@ export default {
           to: { height: '0' }
         }
       },
-      animation: {
-        'neon-blink': 'neon-blink 1.5s infinite',
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out'
-      }
     }
   },
   plugins: [require('tailwindcss-animate')]
