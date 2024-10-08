@@ -1,0 +1,251 @@
+{
+    "address": "8Z2PgtRgp49DtVqA17R3H9AgnHcZ1S7ERs9gDPYdkZYq",
+    "metadata": {
+      "name": "petition_program",
+      "version": "0.1.0",
+      "spec": "0.1.0",
+      "description": "Created with Anchor"
+    },
+    "instructions": [
+      {
+        "name": "create_petition",
+        "docs": [
+          "Creates a new petition with minimal on-chain data."
+        ],
+        "discriminator": [
+          120,
+          138,
+          187,
+          140,
+          190,
+          216,
+          248,
+          181
+        ],
+        "accounts": [
+          {
+            "name": "petition",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    112,
+                    101,
+                    116,
+                    105,
+                    116,
+                    105,
+                    111,
+                    110
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "creator"
+                }
+              ]
+            }
+          },
+          {
+            "name": "creator",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          }
+        ],
+        "args": [
+          {
+            "name": "target_votes",
+            "type": "u64"
+          }
+        ]
+      },
+      {
+        "name": "vote",
+        "docs": [
+          "Allows a user to vote on a petition."
+        ],
+        "discriminator": [
+          227,
+          110,
+          155,
+          23,
+          136,
+          126,
+          172,
+          25
+        ],
+        "accounts": [
+          {
+            "name": "petition",
+            "writable": true
+          },
+          {
+            "name": "vote_account",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    118,
+                    111,
+                    116,
+                    101
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "petition"
+                },
+                {
+                  "kind": "account",
+                  "path": "voter"
+                }
+              ]
+            }
+          },
+          {
+            "name": "voter",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "name": "creator"
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          }
+        ],
+        "args": []
+      }
+    ],
+    "accounts": [
+      {
+        "name": "Petition",
+        "discriminator": [
+          87,
+          19,
+          9,
+          95,
+          177,
+          182,
+          125,
+          117
+        ]
+      },
+      {
+        "name": "Vote",
+        "discriminator": [
+          96,
+          91,
+          104,
+          57,
+          145,
+          35,
+          172,
+          155
+        ]
+      }
+    ],
+    "events": [
+      {
+        "name": "PetitionCompleted",
+        "discriminator": [
+          232,
+          148,
+          122,
+          228,
+          28,
+          242,
+          125,
+          247
+        ]
+      }
+    ],
+    "errors": [
+      {
+        "code": 6000,
+        "name": "CannotVoteOwnPetition",
+        "msg": "You cannot vote on your own petition."
+      },
+      {
+        "code": 6001,
+        "name": "AlreadyVoted",
+        "msg": "You have already voted on this petition."
+      },
+      {
+        "code": 6002,
+        "name": "Overflow",
+        "msg": "Vote count overflow."
+      }
+    ],
+    "types": [
+      {
+        "name": "Petition",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "creator",
+              "type": "pubkey"
+            },
+            {
+              "name": "current_votes",
+              "type": "u64"
+            },
+            {
+              "name": "target_votes",
+              "type": "u64"
+            },
+            {
+              "name": "bump",
+              "type": "u8"
+            }
+          ]
+        }
+      },
+      {
+        "name": "PetitionCompleted",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "petition_id",
+              "type": "pubkey"
+            },
+            {
+              "name": "creator",
+              "type": "pubkey"
+            },
+            {
+              "name": "reward",
+              "type": "u64"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Vote",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "has_voted",
+              "type": "bool"
+            },
+            {
+              "name": "bump",
+              "type": "u8"
+            }
+          ]
+        }
+      }
+    ]
+  }

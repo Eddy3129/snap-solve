@@ -3,7 +3,7 @@ import { useConnection, useAnchorWallet } from '@solana/wallet-adapter-react';
 import { PublicKey, SystemProgram } from '@solana/web3.js';
 import { Button } from '../ui/button';
 import { AnchorProvider, Program, Idl, setProvider } from '@coral-xyz/anchor';
-import idl from '../../petition_program/target/idl/petition_program.json';
+import idl from '../petition_program.json';
 import { supabase } from '@/lib/supabase';  // Import Supabase for updating vote count
 import * as borsh from '@coral-xyz/borsh';
 

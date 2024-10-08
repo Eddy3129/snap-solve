@@ -8,7 +8,7 @@ import LocationSearchInput from '@/components/LocationSearchInput';
 import { useAnchorWallet, useConnection } from '@solana/wallet-adapter-react';
 import { SystemProgram, PublicKey } from '@solana/web3.js';
 import { Program, Idl, AnchorProvider, setProvider } from '@coral-xyz/anchor';
-import idl from '../../petition_program/target/idl/petition_program.json';
+import idl from '../petition_program.json';
 import * as anchor from '@coral-xyz/anchor';
 
 // Styled Components
