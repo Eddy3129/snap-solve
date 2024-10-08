@@ -72,7 +72,7 @@ const FlipCard: React.FC<{ petition: Petition; handleFlip: (id: string) => void;
     <div className="relative overflow-hidden rounded-lg" style={{ position: 'relative' }}>
       {/* The card's content that flips */}
       <div
-        className="h-[375px] w-[250px] relative overflow-hidden rounded-lg"
+        className="h-[450px] w-[300px] relative overflow-hidden rounded-lg"
         onClick={(e) => {
           const target = e.target as HTMLElement;
           if (target.tagName !== 'BUTTON') handleFlip(petition.petition_id);
@@ -91,7 +91,7 @@ const FlipCard: React.FC<{ petition: Petition; handleFlip: (id: string) => void;
               {petition.title}
             </h2>
             <div className="flex items-center text-sm text-muted-foreground mb-4 justify-center">
-              <MapPin className="mr-2 h-12 w-12" />
+              <MapPin className="mr-2 h-24 w-24" />
               <span>{petition.location}</span>
             </div>
           </div>
@@ -99,7 +99,7 @@ const FlipCard: React.FC<{ petition: Petition; handleFlip: (id: string) => void;
 
         {/* Back content */}
         <animated.div
-          className="w-full h-full absolute bg-card text-card-foreground rounded-lg overflow-hidden p-4"
+          className="w-full h-full absolute bg-card text-card-foreground rounded-lg overflow-hidden p-4 border-2 border-neonPink"
           style={{
             opacity,
             transform,
@@ -108,15 +108,16 @@ const FlipCard: React.FC<{ petition: Petition; handleFlip: (id: string) => void;
         >
           <h2 className="text-xl font-semibold mb-2 text-neonBlue">{petition.title}</h2>
           <div className="text-xs mb-2">
-            <span>Created At: {new Date(petition.createdAt).toLocaleDateString()}</span>
+            <span className="text-sm text-neonPink">Created At: </span><br />
+            <span className="text-xs">{new Date(petition.createdAt).toLocaleDateString()}</span>
+          </div>
+          <div className="mb-2 break-all">
+            <span className="text-sm text-neonPink">Petition ID:</span> <br />
+            <span className="text-xs" >{petition.petition_id}</span>
           </div>
           <div className="text-xs mb-2 break-all">
-            <span>Petition ID:</span> <br />
-            <span>{petition.petition_id}</span>
-          </div>
-          <div className="text-xs mb-2 break-all">
-            <span>Transaction Hash:</span> <br />
-            <span>{petition.transaction_hash}</span>
+            <span className="text-sm text-neonPink">Transaction Hash:</span> <br />
+            <span className="text-xs">{petition.transaction_hash}</span>
           </div>
         </animated.div>
       </div>
@@ -125,7 +126,7 @@ const FlipCard: React.FC<{ petition: Petition; handleFlip: (id: string) => void;
       <div className="absolute bottom-0 left-0 right-0 flex justify-center z-10 p-4">
         <Link href={`/posts/${petition.petition_id}`}>
           <button
-            className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-purple-700 transition cursor-pointer"
+            className="bg-pink-500 text-white px-4 py-2 mb-3 rounded hover:bg-purple-700 transition cursor-pointer"
             onClick={(e) => e.stopPropagation()} // Prevent card flip when clicking the button
           >
             View Post
