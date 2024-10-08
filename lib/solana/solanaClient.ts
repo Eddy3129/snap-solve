@@ -2,7 +2,7 @@
 
 import { Connection, PublicKey } from '@solana/web3.js';
 import { AnchorProvider, Program, setProvider, Idl } from '@coral-xyz/anchor';
-import idl from '../../snap-solve-solana/target/idl/petition.json'; // Adjust the path if necessary
+import idl from '@/components/petition_program.json'; // Adjust the path if necessary
 
 // Define your program ID (ensure it matches your on-chain program)
 export const PROGRAM_ID = new PublicKey("EuURLmnKvM2ZLtoSry177rtKhfZtPPSJq42hAhdJB1si");
