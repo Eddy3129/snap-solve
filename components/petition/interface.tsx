@@ -1,16 +1,21 @@
 //components\ui\petition\interface.tsx
 
 export interface Petition {
-  id: string;
   title: string;
   description: string;
   location: string;
   latitude: number;
   longitude: number;
-  signatures: number;
-  goal: number;
   image: string;
+  target: number;
+  votes: number;
+  creator: string;
   createdAt: string;
-  isActive: boolean;
-  expiry: number;
+  transaction_hash: string;
+  petition_id: string;
 }
+
+export interface VoteAccount {
+  signed: boolean;
+}
+

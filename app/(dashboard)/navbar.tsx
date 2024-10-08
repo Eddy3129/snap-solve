@@ -74,6 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch, onLocateUser }) => {
             <Pencil className="mr-2 h-5 w-5" />
             Create Petition
           </button>
+          <WalletClient></WalletClient>
         </nav>
         {/* Mobile Menu Button */}
         <button onClick={toggleMobileMenu} className="md:hidden focus:outline-none">

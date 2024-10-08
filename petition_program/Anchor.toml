@@ -1,0 +1,21 @@
+[toolchain]
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+petition_program = "BMCHNRR9Wt4Z4Kj1pjPF56hbnBoMizMj5d5Cn69pfn2F"
+
+[programs.devnet]
+petition_program = "8Z2PgtRgp49DtVqA17R3H9AgnHcZ1S7ERs9gDPYdkZYq"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

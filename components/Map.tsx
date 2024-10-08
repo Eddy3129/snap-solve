@@ -157,15 +157,15 @@ const MyMap: React.FC<MapProps> = ({ setMapInstance }) => {
       {/* Render existing petition markers */}
       {petitions.map((petition) => (
         <Marker
-          key={petition.id}
-          position={[petition.latitude, petition.longitude]}
+          key={petition.petition_id}
+          position={[Number(petition.latitude), Number(petition.longitude)]}
           icon={alertIcon}
         >
           <Popup>
             <div>
               <strong>{petition.title}</strong>
               <br />
-              <Link href={`/posts/${petition.id}`}>View Post</Link>
+              <Link href={`/posts/${petition.petition_id}`}>View Post</Link>
             </div>
           </Popup>
         </Marker>

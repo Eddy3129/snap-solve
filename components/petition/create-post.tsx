@@ -1,15 +1,15 @@
-//components\ui\petition\create-post.tsx
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import styled from 'styled-components';
-import { createClient } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
-import { SessionProvider } from "next-auth/react";
 import LocationSearchInput from '@/components/LocationSearchInput';
-
+import { useAnchorWallet, useConnection } from '@solana/wallet-adapter-react';
+import { SystemProgram, PublicKey } from '@solana/web3.js';
+import { Program, Idl, AnchorProvider, setProvider } from '@coral-xyz/anchor';
+import idl from '../../petition_program/target/idl/petition_program.json';
+import * as anchor from '@coral-xyz/anchor';
 
 // Styled Components
 const ImageUploadArea = styled.div`
@@ -21,35 +21,9 @@ const ImageUploadArea = styled.div`
   color: #d8b4fe;
 `;
 
-const DropdownList = styled.ul`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 10;
-  background: white;
-  color: black;
-  border: 1px solid #8b5cf6;
-  border-radius: 8px;
-  max-height: 150px;
-  overflow-y: auto;
-  width: 100%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 0;
-  list-style: none;
-`;
-
-const DropdownItem = styled.li`
-  padding: 8px;
-  cursor: pointer;
-  &:hover {
-    background: #8b5cf6;
-    color: white;
-  }
-`;
-
 const ImagePreview = styled.img`
-  width: 100px; /* Adjust as needed */
-  height: 100px; /* Adjust as needed */
+  width: 100px;
+  height: 100px;
   margin-top: 10px;
   border-radius: 8px;
 `;
@@ -66,100 +40,130 @@ interface LocationSuggestion {
   lon: string;
 }
 
-export default function ReportForm() {
-  const initialState = { message: null, errors: {} };
-  const [locationSuggestions, setLocationSuggestions] = useState<LocationSuggestion[]>([]);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+const CreatePetitionForm: React.FC = () => {
+  const anchorWallet = useAnchorWallet();
+  const { connection } = useConnection();
+  const publicKey = anchorWallet?.publicKey;
+
   const [latitude, setLatitude] = useState<string | null>(null);
   const [longitude, setLongitude] = useState<string | null>(null);
-  const [imageURL, setImageURL] = useState<string | null>(null); // Store a single image URL
-  const [imageName, setImageName] = useState<string | null>(null); // Store the image file name
-  const [formMessage, setFormMessage] = useState<string | null>(null); // Form submission message
+  const [imageURL, setImageURL] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
+  const [formMessage, setFormMessage] = useState<string | null>(null);
 
-  // Handle form state changes such as submission, errors, or successful actions
+  // Form field states
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [location, setLocation] = useState<string>('');
+  const [targetVotes, setTargetVotes] = useState<number>(100); // Set an initial target votes
+
+  // File for image upload
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
   useEffect(() => {
     if (formMessage) {
       alert(formMessage);
     }
   }, [formMessage]);
 
-  // Handle location search
-  const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    if (value.length > 2) {
-      try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${value}`);
-        const results: LocationSuggestion[] = await response.json();
-        setLocationSuggestions(results);
-        setIsDropdownVisible(true);
-      } catch (error) {
-        console.error('Error fetching location data:', error);
-      }
-    } else {
-      setIsDropdownVisible(false);
-    }
-  };
-
-  // Handle suggestion click
   const handleLocationSelect = (suggestion: LocationSuggestion) => {
-    const locationInput = document.getElementById('location') as HTMLInputElement;
-    if (locationInput) {
-      locationInput.value = suggestion.display_name;
-    }
+    setLocation(suggestion.display_name);
     setLatitude(suggestion.lat);
     setLongitude(suggestion.lon);
   };
 
-  // Handle image upload
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (file) {
+      try {
+        const { data, error } = await supabase.storage
+          .from('images')
+          .upload(`public/${file.name}`, file);
 
-    try {
-      const { data, error } = await supabase.storage
-        .from('images')
-        .upload(`public/${file.name}`, file);
-      if (error) {
-        throw new Error('Error uploading image');
-      } else {
-        const { data: publicUrlData } = supabase.storage.from('images').getPublicUrl(`public/${file.name}`);
+        if (error) throw new Error('Error uploading image');
+
+        const { data: publicUrlData } = supabase.storage
+          .from('images')
+          .getPublicUrl(`public/${file.name}`);
+        
         setImageURL(publicUrlData.publicUrl || '');
         setImageName(file.name);
+      } catch (error: any) {
+        alert(`Error uploading image: ${error.message}`);
       }
-    } catch (error: any) {
-      alert(`Error uploading image: ${error.message}`);
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const title = (document.getElementById('title') as HTMLInputElement).value;
-    const description = (document.getElementById('description') as HTMLInputElement).value;
-    const location = (document.getElementById('location') as HTMLInputElement).value;
+    if (!publicKey) {
+      alert('Please connect your wallet.');
+      return;
+    }
 
     if (!title || !description || !location || !latitude || !longitude || !imageURL) {
-      alert('Please fill in all required fields.');
+      alert('Please fill in all required fields and upload an image.');
+      return;
+    }
+
+    if (!anchorWallet) {
+      alert('Wallet not connected');
       return;
     }
 
     try {
-      const { error } = await supabase
-      .from('petitions') 
-      .insert([
-        {
-          title,
-          description,
-          location,
-          latitude,
-          longitude,
-          image: imageURL,
-        }
-      ]);
-    if (error) throw error;
-      
+      // Initialize Anchor provider
+      const provider = new AnchorProvider(connection, anchorWallet, {
+        preflightCommitment: 'processed',
+      });
+      setProvider(provider); // Sets the default provider for Anchor
+
+      // Instantiate Program with correct program ID
+      const programId = new PublicKey("xnvDsEDqnUh22BRpicSSSJHKjKtBJpPa1j1esc8tpww");
+      const program = new Program(idl as Idl, provider);
+
+      // Derive the PDA for the petition account
+      const [petitionPDA, bump] = await PublicKey.findProgramAddressSync(
+        [Buffer.from("petition"), publicKey.toBuffer()],
+        program.programId
+      );
+
+      const targetVotesBN = new anchor.BN(targetVotes);
+
+      // Send the create_petition transaction without the petitionKey as a signer
+      const tx = await program.methods
+        .createPetition(targetVotesBN)
+        .accounts({
+          petition: petitionPDA,
+          creator: publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .rpc();
+
+      console.log('Transaction signature:', tx);
+
+      // Save petition details to Supabase
+      const { error: dbError } = await supabase
+        .from('petitions')
+        .insert([
+          {
+            title,
+            description,
+            location,
+            latitude: parseFloat(latitude || '0'),
+            longitude: parseFloat(longitude || '0'),
+            image: imageURL,
+            createdAt: new Date().toISOString(),  // Save the current timestamp
+            votes: 0,  // Initially 0 votes
+            target: targetVotes,  // Use the target from form
+            petition_id: petitionPDA.toString(),  // Use the petition's PDA as petition_id
+            transaction_hash: tx,  // Store the transaction signature
+          },
+        ]);
+
+      if (dbError) throw dbError;
+
       setFormMessage('Petition created successfully!');
     } catch (error: any) {
       setFormMessage(`Error creating petition: ${error.message}`);
@@ -169,7 +173,7 @@ export default function ReportForm() {
   return (
     <div className="w-full bg-black rounded-lg shadow-lg p-8">
       <h1 className="text-3xl font-bold text-center text-purple-300 mb-8">Create A Petition</h1>
-      <form onSubmit={handleSubmit} className="space-y-6"> {/* Updated to use handleSubmit function */}
+      <form onSubmit={handleSubmit} className="space-y-6">
         {/* Title */}
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-purple-300 mb-1">
@@ -180,6 +184,8 @@ export default function ReportForm() {
             name="title"
             type="text"
             placeholder="Enter title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full px-3 py-2 bg-gray-800 border border-purple-500 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
             required
           />
@@ -195,6 +201,8 @@ export default function ReportForm() {
             name="description"
             rows={4}
             placeholder="Describe your situation..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="w-full px-3 py-2 bg-gray-800 border border-purple-500 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
             required
           />
@@ -205,9 +213,24 @@ export default function ReportForm() {
           <label htmlFor="location" className="block text-sm font-medium text-purple-300 mb-1">
             Location
           </label>
-          <div className="flex items-center relative">
-            <LocationSearchInput onLocationSelect={handleLocationSelect} />
-          </div>
+          <LocationSearchInput onLocationSelect={handleLocationSelect} />
+        </div>
+
+        {/* Target Votes */}
+        <div>
+          <label htmlFor="targetVotes" className="block text-sm font-medium text-purple-300 mb-1">
+            Target Votes
+          </label>
+          <input
+            id="targetVotes"
+            name="targetVotes"
+            type="number"
+            placeholder="Enter target votes"
+            value={targetVotes}
+            onChange={(e) => setTargetVotes(Number(e.target.value))}
+            className="w-full px-3 py-2 bg-gray-800 border border-purple-500 rounded-md text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            required
+          />
         </div>
 
         {/* Image Upload */}
@@ -218,7 +241,7 @@ export default function ReportForm() {
             onChange={handleImageUpload}
             style={{ display: 'none' }}
             id="image-upload"
-            required // Make sure this input is required
+            required
           />
           <label htmlFor="image-upload" style={{ cursor: 'pointer' }}>
             Click to upload an image (or drag and drop)
@@ -242,4 +265,6 @@ export default function ReportForm() {
       </form>
     </div>
   );
-}
+};
+
+export default CreatePetitionForm;
