@@ -100,7 +100,7 @@ const PetitionDetail: React.FC<Props> = ({ params }) => {
             </div>
             <Progress value={progress} />
           </div>
-          <SignPetitionButton petitionId={petition.transaction_hash} onSignSuccess={fetchPetition} />
+          <SignPetitionButton petitionId={petition.petition_id} onSignSuccess={fetchPetition} />
         </div>
       </div>
     </div>

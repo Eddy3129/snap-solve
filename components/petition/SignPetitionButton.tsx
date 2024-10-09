@@ -4,7 +4,7 @@ import { PublicKey, SystemProgram } from '@solana/web3.js';
 import { Button } from '../ui/button';
 import { AnchorProvider, Program, Idl, setProvider } from '@coral-xyz/anchor';
 import idl from '../petition_program.json';
-import { supabase } from '@/lib/supabase';  // Import Supabase for updating vote count
+import { supabase } from '@/lib/supabase';
 import * as borsh from '@coral-xyz/borsh';
 
 // Define the Borsh schema for petition data
@@ -18,7 +18,7 @@ const PetitionSchema = borsh.struct([
 
 interface Petition {
   creator: PublicKey;
-  current_votes: bigint; 
+  current_votes: bigint;
   target_votes: bigint;
   bump: number;
 }
@@ -41,17 +41,18 @@ const SignPetitionButton: React.FC<Props> = ({ petitionId, onSignSuccess }) => {
 
   const fetchPetitionData = async (petitionAccount: PublicKey): Promise<Petition | null> => {
     try {
+      console.log('Fetching petition data for account:', petitionAccount.toBase58());
       const accountInfo = await connection.getAccountInfo(petitionAccount);
-  
+
       if (accountInfo && accountInfo.data) {
         const decodedData = PetitionSchema.decode(accountInfo.data);
         return {
           ...decodedData,
           current_votes: Number(decodedData.current_votes),
-          target_votes: Number(decodedData.target_votes)   
+          target_votes: Number(decodedData.target_votes),
         };
       } else {
-        console.error('No data found for this petition');
+        console.error('No data found for petition account:', petitionAccount.toBase58());
         return null;
       }
     } catch (error) {
@@ -62,87 +63,90 @@ const SignPetitionButton: React.FC<Props> = ({ petitionId, onSignSuccess }) => {
 
   const handleSignPetition = async () => {
     setIsSigning(true);
-  
+
     try {
       // Step 1: Check wallet balance
+      console.log('Checking wallet balance for:', publicKey.toBase58());
       const balance = await connection.getBalance(publicKey);
-      if (balance < 0.01 * 1e9) { // 0.01 SOL in lamports
+      if (balance < 0.01 * 1e9) {
         throw new Error("Insufficient balance to sign the petition.");
       }
-  
+
       // Step 2: Set up Anchor provider and program
+      console.log('Setting up Anchor provider and program...');
       const provider = new AnchorProvider(connection, anchorWallet, {
         preflightCommitment: 'processed',
       });
       setProvider(provider);
       const programId = new PublicKey("xnvDsEDqnUh22BRpicSSSJHKjKtBJpPa1j1esc8tpww");
       const program = new Program(idl as Idl, provider);
-  
+
       // Step 3: Create PublicKey for petition account
-      const petitionAccount = new PublicKey(petitionId);
-  
-      // Fetch petition data using the deserialization method
-      const petitionData = await fetchPetitionData(petitionAccount);
-  
-      if (petitionData) {
-        // If petition data is present, log it
-        console.log("Petition Creator (Pubkey):", petitionData.creator.toBase58());
-        console.log("Current Votes:", petitionData.current_votes);
-        console.log("Target Votes:", petitionData.target_votes);
-        console.log("Bump (u8):", petitionData.bump);
-      } else {
-        console.error("Could not retrieve petition data.");
-        alert("Could not retrieve petition data. Please try again or check the petition ID.");
-        setIsSigning(false);
-        return; // Exit the function early if no petition data is found
+      console.log('Creating PublicKey for petition account with ID:', petitionId);
+      let petitionAccount;
+      try {
+        petitionAccount = new PublicKey(petitionId);
+      } catch (error) {
+        throw new Error(`Invalid petition ID: ${petitionId}`);
       }
-  
-      // Step 4: Derive the PDA for the vote account
+
+      // Step 4: Fetch petition data using the deserialization method
+      const petitionData = await fetchPetitionData(petitionAccount);
+      if (!petitionData) {
+        throw new Error("Could not retrieve petition data. Please try again or check the petition ID.");
+      }
+      console.log("Fetched petition data successfully:", petitionData);
+
+      // Step 5: Derive the PDA for the vote account
+      console.log('Deriving PDA for vote account...');
       const [votePDA, _] = await PublicKey.findProgramAddressSync(
         [Buffer.from("vote"), petitionAccount.toBuffer(), publicKey.toBuffer()],
         program.programId
       );
-  
-      // Step 5: Create the transaction for the vote
+
+      // Step 6: Create the transaction for the vote
+      console.log('Creating transaction for voting on petition...');
       const tx = await program.methods
         .vote()
         .accounts({
           petition: petitionAccount,
           voteAccount: votePDA,
           voter: publicKey,
-          creator: petitionData.creator, // Use the creator field from deserialized data
+          creator: petitionData.creator,
           systemProgram: SystemProgram.programId,
         })
         .rpc();
-  
+
       console.log('Vote transaction signature:', tx);
-  
-      // Optionally, confirm the transaction
+
+      // Step 7: Confirm the transaction
+      console.log('Confirming transaction...');
       await connection.confirmTransaction(tx, 'processed');
-  
+
+      // Step 8: Fetch updated petition data
+      console.log('Fetching updated petition data...');
       const updatedPetitionData = await fetchPetitionData(petitionAccount);
-  
       if (updatedPetitionData) {
         console.log("Updated Petition Data from Blockchain:", updatedPetitionData.current_votes);
       }
-    
-      const currentVotes= updatedPetitionData?.current_votes;
-  
-      // Increment vote count in Supabase
+
+      // Step 9: Update vote count in Supabase
+      const currentVotes = updatedPetitionData?.current_votes;
+      console.log('Updating vote count in Supabase...');
       const { error: updateError } = await supabase
         .from('petitions')
-        .update({ votes: currentVotes }) 
+        .update({ votes: currentVotes })
         .eq('petition_id', petitionId);
-  
+
       if (updateError) {
         console.error('Error updating vote count in Supabase:', updateError.message);
       } else {
         console.log('Vote count updated in Supabase successfully.');
       }
-  
+
       alert(`Petition signed successfully! Transaction signature: ${tx}`);
       setHasSigned(true);
-      onSignSuccess(); // Refetch petition data to update the UI
+      onSignSuccess();
     } catch (error: any) {
       console.error('Error signing petition:', error);
       alert(`Error signing petition: ${error.message}`);
@@ -150,7 +154,6 @@ const SignPetitionButton: React.FC<Props> = ({ petitionId, onSignSuccess }) => {
       setIsSigning(false);
     }
   };
-  
 
   return (
     <Button

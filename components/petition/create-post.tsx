@@ -43,7 +43,7 @@ interface LocationSuggestion {
 const CreatePetitionForm: React.FC = () => {
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
-  const publicKey = anchorWallet?.publicKey;
+  const publicKey = anchorWallet?.publicKey;  // This is the creator's public key
 
   const [latitude, setLatitude] = useState<string | null>(null);
   const [longitude, setLongitude] = useState<string | null>(null);
@@ -123,15 +123,15 @@ const CreatePetitionForm: React.FC = () => {
       const programId = new PublicKey("xnvDsEDqnUh22BRpicSSSJHKjKtBJpPa1j1esc8tpww");
       const program = new Program(idl as Idl, provider);
 
-      // Derive the PDA for the petition account
+      // Derive the PDA for the petition account using the creator's public key
       const [petitionPDA, bump] = await PublicKey.findProgramAddressSync(
-        [Buffer.from("petition"), publicKey.toBuffer()],
+        [Buffer.from("petition"), publicKey.toBuffer()], // Use creator's public key for PDA
         program.programId
       );
 
       const targetVotesBN = new anchor.BN(targetVotes);
 
-      // Send the create_petition transaction without the petitionKey as a signer
+      // Send the create_petition transaction
       const tx = await program.methods
         .createPetition(targetVotesBN)
         .accounts({
@@ -159,6 +159,7 @@ const CreatePetitionForm: React.FC = () => {
             target: targetVotes,  // Use the target from form
             petition_id: petitionPDA.toString(),  // Use the petition's PDA as petition_id
             transaction_hash: tx,  // Store the transaction signature
+            creator: publicKey.toBase58(),  // Store the creator's public key in Supabase
           },
         ]);
 
