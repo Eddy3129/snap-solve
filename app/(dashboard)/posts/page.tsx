@@ -124,7 +124,7 @@ const FlipCard: React.FC<{ petition: Petition; handleFlip: (id: string) => void;
 
       {/* Button inside the card but positioned at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 flex justify-center z-10 p-4">
-        <Link href={`/posts/${petition.petition_id}`}>
+        <Link href={`/posts/${petition.transaction_hash}`}>
           <button
             className="bg-pink-500 text-white px-4 py-2 mb-3 rounded hover:bg-purple-700 transition cursor-pointer"
             onClick={(e) => e.stopPropagation()} // Prevent card flip when clicking the button
