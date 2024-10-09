@@ -1,64 +1,130 @@
-<div align="center"><strong>Next.js 14 Admin Dashboard Template</strong></div>
-<div align="center">Built with the Next.js App Router</div>
-<br />
-<div align="center">
-<a href="https://next-admin-dash.vercel.app/">Demo</a>
-<span> · </span>
-<a href="https://vercel.com/templates/next.js/admin-dashboard-tailwind-postgres-react-nextjs">Clone & Deploy</a>
-<span>
-</div>
+# Petition Program - Getting Started Guide
 
-## Overview
+Welcome to the Petition Program project! Follow the steps below to set up and run the project on your local machine. Ensure you have all the prerequisites installed for a smooth start.
 
-This is a starter template using the following stack:
+## Prerequisites
+- [Node.js](https://nodejs.org/) (v16 or later recommended)
+- [pnpm](https://pnpm.io/installation)
+- [Anchor CLI](https://project-serum.github.io/anchor/getting-started/installation.html)
+- [Rust](https://www.rust-lang.org/tools/install)
 
-- Framework - [Next.js (App Router)](https://nextjs.org)
-- Language - [TypeScript](https://www.typescriptlang.org)
-- Auth - [Auth.js](https://authjs.dev)
-- Database - [Postgres](https://vercel.com/postgres)
-- Deployment - [Vercel](https://vercel.com/docs/concepts/next.js/overview)
-- Styling - [Tailwind CSS](https://tailwindcss.com)
-- Components - [Shadcn UI](https://ui.shadcn.com/)
-- Analytics - [Vercel Analytics](https://vercel.com/analytics)
-- Formatting - [Prettier](https://prettier.io)
+## Setup Instructions
 
-This template uses the new Next.js App Router. This includes support for enhanced layouts, colocation of components, tests, and styles, component-level data fetching, and more.
+### 1. Clone the Repository
 
-## Getting Started
-
-During the deployment, Vercel will prompt you to create a new Postgres database. This will add the necessary environment variables to your project.
-
-Inside the Vercel Postgres dashboard, create a table based on the schema defined in this repository.
-
-```
-CREATE TYPE status AS ENUM ('active', 'inactive', 'archived');
-
-CREATE TABLE products (
-  id SERIAL PRIMARY KEY,
-  image_url TEXT NOT NULL,
-  name TEXT NOT NULL,
-  status status NOT NULL,
-  price NUMERIC(10, 2) NOT NULL,
-  stock INTEGER NOT NULL,
-  available_at TIMESTAMP NOT NULL
-);
-```
-
-Then, uncomment `app/api/seed.ts` and hit `http://localhost:3000/api/seed` to seed the database with products.
-
-Next, copy the `.env.example` file to `.env` and update the values. Follow the instructions in the `.env.example` file to set up your GitHub OAuth application.
+First, clone the repository and navigate to its directory:
 
 ```bash
-npm i -g vercel
-vercel link
-vercel env pull
+git clone <repository-url>
+cd <repository-directory>
 ```
 
-Finally, run the following commands to start the development server:
+### 2. Navigate to the Program Directory
 
+Move into the `petition_program` directory where the smart contract code is located:
+
+```bash
+cd petition_program
 ```
+
+### 3. Install Dependencies
+
+You need to install the required dependencies at both the root level and within the `petition_program` directory:
+
+#### 3.1 Install Root-Level Dependencies
+
+Navigate to the root directory (if you're not already there) and run:
+
+```bash
 pnpm install
+```
+
+#### 3.2 Install Petition Program Dependencies
+
+Next, navigate to the `petition_program` directory and install the dependencies specific to it:
+
+```bash
+cd petition_program
+pnpm install
+```
+
+### 4. Deploy the Program
+
+Deploy the program to obtain a program ID:
+
+- **Localnet Deployment**:
+
+  ```bash
+  anchor deploy
+  ```
+
+- **Devnet Deployment** (useful for public testing):
+
+  ```bash
+  anchor deploy --provider.cluster devnet
+  ```
+
+Make sure your `solana` CLI is configured to the correct cluster (`localnet`, `devnet`, or `mainnet`). You can check the current configuration with:
+
+```bash
+solana config get
+```
+
+### 5. Modify the Program ID
+
+After deploying, update the program ID to match your deployment:
+
+1. Open the `Anchor.toml` file.
+2. Modify the `program_id` field with the program ID obtained from the deployment.
+3. Make sure that the updated program ID is also set in your Rust smart contract.
+
+The `program_id` must be consistent between the `Anchor.toml` and your smart contract source code.
+
+### 6. Build the Project
+
+To compile the smart contract, run the following command:
+
+```bash
+anchor build
+```
+
+### 7. Set Up Environment Variables
+
+Create a `.env` file based on the provided `.env.example` file:
+
+```bash
+cp .env.example .env
+```
+
+Update the values in `.env` as needed to match your configuration.
+
+### 8. Run the Development Server
+
+To start the frontend or server-side portion of the program:
+
+```bash
 pnpm dev
 ```
 
-You should now be able to access the application at http://localhost:3000.
+The development server should now be running, allowing you to interact with the application locally.
+
+## Standard Operating Procedure (SOP) for Deployment
+
+1. **Deploy the Program**: Use `anchor deploy` to deploy the program and obtain the program ID.
+2. **Update Program ID**: Ensure that the `program_id` is updated in both `Anchor.toml` and your Rust code after deploying.
+3. **Build and Deploy**:
+   - Run `anchor build` to compile the smart contract.
+   - Use `anchor deploy` to deploy the program to the desired cluster.
+4. **Verify Deployment**:
+   - Verify the deployment by running `solana program show <program_id>`. This command will confirm if the program is correctly deployed.
+
+## Troubleshooting Tips
+
+- **Anchor CLI Errors**: Ensure that your Anchor version is up to date. Run `anchor --version` and update if necessary.
+- **Program ID Mismatch**: If you encounter a program ID mismatch, double-check that both `Anchor.toml` and the Rust source file contain the same program ID.
+- **Network Issues**: Ensure that your Solana CLI is configured to the correct network using `solana config set --url <network>`.
+
+## Additional Resources
+- [Anchor Documentation](https://book.anchor-lang.com/)
+- [Solana CLI Documentation](https://docs.solana.com/cli)
+- [Rust Language Documentation](https://doc.rust-lang.org/)
