@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 interface Props {
   params: {
-    petition_id: string; // Ensure to match this with the dynamic route parameter
+    transaction_hash: string; // Ensure to match this with the dynamic route parameter
   };
 }
 
@@ -26,7 +26,7 @@ const PetitionDetail: React.FC<Props> = ({ params }) => {
       const { data, error } = await supabase
         .from('petitions')
         .select('*')
-        .eq('petition_id', params.petition_id) // Use the correct column name
+        .eq('transaction_hash', params.transaction_hash) // Use the correct column name
         .single();
 
       if (error) {
@@ -50,9 +50,9 @@ const PetitionDetail: React.FC<Props> = ({ params }) => {
 
   useEffect(() => {
     fetchPetition();
-  }, [params.petition_id]);
+  }, [params.transaction_hash]);
 
-  console.log('Petition ID:', params.petition_id);
+  console.log('Transaction Hash:', params.transaction_hash);
 
   // Handle error by returning a 404 response
   if (error) {
@@ -100,7 +100,7 @@ const PetitionDetail: React.FC<Props> = ({ params }) => {
             </div>
             <Progress value={progress} />
           </div>
-          <SignPetitionButton petitionId={petition.petition_id} onSignSuccess={fetchPetition} /> 
+          <SignPetitionButton petitionId={petition.transaction_hash} onSignSuccess={fetchPetition} />
         </div>
       </div>
     </div>
