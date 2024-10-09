@@ -4,27 +4,28 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'avatars.githubusercontent.com'
+        hostname: 'mybuxkutxuhcwdclejpm.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/images/**',  
+      },
+      // Other hostnames you need
+      {
+        protocol: 'https',
+        hostname: 'avatars.githubusercontent.com',
       },
       {
         protocol: 'https',
-        hostname: '*.public.blob.vercel-storage.com'
+        hostname: '*.public.blob.vercel-storage.com',
       },
-      {
-        protocol: 'https',
-        hostname: 'mybuxkutxuhcwdclejpm.supabase.co'
-      },
-      // If you also need https for example.com, add this:
       {
         protocol: 'http',
-        hostname: 'example.com'
-      }
-    ]
-  }
-};
-
-module.exports = {
+        hostname: 'example.com',
+      },
+    ],
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
-}
+};
+
+module.exports = nextConfig;
