@@ -3,7 +3,7 @@
 Welcome to the Petition Program project! Follow the steps below to set up and run the project on your local machine. Ensure you have all the prerequisites installed for a smooth start.
 
 ## Prerequisites
-- [Node.js](https://nodejs.org/) (v16 or later recommended)
+- [Node.js](https://nodejs.org/) 
 - [pnpm](https://pnpm.io/installation)
 - [Anchor CLI](https://project-serum.github.io/anchor/getting-started/installation.html)
 - [Rust](https://www.rust-lang.org/tools/install)
