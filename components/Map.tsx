@@ -165,7 +165,7 @@ const MyMap: React.FC<MapProps> = ({ setMapInstance }) => {
             <div>
               <strong>{petition.title}</strong>
               <br />
-              <Link href={`/posts/${petition.petition_id}`}>View Post</Link>
+              <Link href={`/posts/${petition.transaction_hash}`}>View Post</Link>
             </div>
           </Popup>
         </Marker>
