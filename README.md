@@ -1,6 +1,6 @@
-# Petition Program - Getting Started Guide
+# SnapSolve - Getting Started Guide
 
-Welcome to the Petition Program project! Follow the steps below to set up and run the project on your local machine. Ensure you have all the prerequisites installed for a smooth start.
+Welcome to the SnapSolve project! Follow the steps below to set up and run the project on your local machine. Ensure you have all the prerequisites installed for a smooth start.
 
 ## Prerequisites
 - [Node.js](https://nodejs.org/) 
