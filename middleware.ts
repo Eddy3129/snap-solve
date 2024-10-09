@@ -1,5 +1,17 @@
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-// Don't invoke Middleware on some paths
+export default function middleware(request: NextRequest) {
+  // Redirect only if the request is to the root path ("/")
+  if (request.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/home', request.url));
+  }
+
+  // Allow access to other pages without redirecting
+  return NextResponse.next();
+}
+
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)']
+  // Apply the middleware to all paths
+  matcher: '/:path*',
 };
